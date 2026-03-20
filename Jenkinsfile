@@ -8,7 +8,10 @@ pipeline {
     stages {
         stage('Clone Code') {
             steps {
-                sh 'git clone https://github.com/sunnyajay293/ajay-nginx.git'
+                sh '''
+                rm -rf ajay-nginx
+                git clone https://github.com/sunnyajay293/ajay-nginx.git
+                '''
             }
         }
 
