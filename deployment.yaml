@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ajay-nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ajay-nginx
+  template:
+    metadata:
+      labels:
+        app: ajay-nginx
+    spec:
+      containers:
+      - name: ajay-nginx
+        image: sunnyajy293/ajay-nginx
+        ports:
+        - containerPort: 80
