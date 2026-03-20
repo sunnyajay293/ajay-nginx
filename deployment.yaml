@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: ajay-nginx
-        image: sunnyajy293/ajay-nginx
+        image: sunnyajy293/ajay-nginx:latest
         ports:
         - containerPort: 80
