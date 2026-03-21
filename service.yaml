@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: ajay-nginx-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: ajay-nginx
   ports:
