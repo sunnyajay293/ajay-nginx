@@ -9,7 +9,9 @@ pipeline {
 
         stage('Clone Code') {
             steps {
-                git credentialsId: 'github-creds', url: 'https://github.com/sunnyajay293/ajay-nginx.git'
+                git branch: 'main',
+    credentialsId: 'github-creds',
+    url: 'https://github.com/sunnyajay293/ajay-nginx.git'
             }
         }
 
