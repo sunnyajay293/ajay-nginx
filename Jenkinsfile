@@ -1,38 +1,37 @@
 pipeline {
     agent any
 
-    options {
-        skipDefaultCheckout(true)
+    environment {
+        DOCKER_IMAGE = "sunnyajy293/ajay-nginx:v2"
     }
 
     stages {
+
         stage('Clone Code') {
             steps {
-                sh '''
-                rm -rf ajay-nginx
-                git clone https://github.com/sunnyajay293/ajay-nginx.git
-                '''
+                git 'https://github.com/sunnyajy293/ajay-nginx.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t sunnyajy293/ajay-nginx:latest ajay-nginx'
+                sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
 
         stage('Push to DockerHub') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-creds',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-                    sh '''
-                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                    docker push sunnyajy293/ajay-nginx:latest
-                    '''
+                withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    sh 'echo $PASS | docker login -u $USER --password-stdin'
+                    sh 'docker push $DOCKER_IMAGE'
                 }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl apply -f deployment.yaml'
+                sh 'kubectl apply -f service.yaml'
             }
         }
     }
